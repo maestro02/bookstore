@@ -1,9 +1,9 @@
-package main.java.org.books.persistence.repository;
+package org.books.persistence.repository;
 
 import java.util.List;
 
-import main.java.org.books.persistence.entity.Customer;
-import main.java.org.books.persistence.dto.CustomerInfo;
+import org.books.persistence.entity.Customer;
+import org.books.persistence.dto.CustomerInfo;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;

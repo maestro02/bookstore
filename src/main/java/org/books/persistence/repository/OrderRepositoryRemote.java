@@ -1,8 +1,8 @@
-package main.java.org.books.persistence.repository;
+package org.books.persistence.repository;
 
-import main.java.org.books.persistence.entity.Customer;
-import main.java.org.books.persistence.entity.Order;
-import main.java.org.books.persistence.dto.OrderInfo;
+import org.books.persistence.entity.Customer;
+import org.books.persistence.entity.Order;
+import org.books.persistence.dto.OrderInfo;
 
 import javax.ejb.Remote;
 import java.util.List;

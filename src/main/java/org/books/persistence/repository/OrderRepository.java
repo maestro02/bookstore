@@ -1,11 +1,11 @@
-package main.java.org.books.persistence.repository;
+package org.books.persistence.repository;
 
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import main.java.org.books.persistence.entity.Order;
-import main.java.org.books.persistence.entity.Customer;
-import main.java.org.books.persistence.dto.OrderInfo;
+import org.books.persistence.entity.Order;
+import org.books.persistence.entity.Customer;
+import org.books.persistence.dto.OrderInfo;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;

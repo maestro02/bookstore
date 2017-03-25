@@ -1,6 +1,6 @@
-package main.java.org.books.persistence.entity;
+package org.books.persistence.entity;
 
-import main.java.org.books.persistence.enumeration.OrderStatus;
+import org.books.persistence.enumeration.OrderStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,27 +1,23 @@
-package test.org.books.persistence;
+package org.books.persistence;
 
-import main.java.org.books.persistence.entity.*;
-import main.java.org.books.persistence.repository.BookRepository;
+import org.books.persistence.entity.*;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import main.java.org.books.persistence.repository.CustomerRepository;
-import main.java.org.books.persistence.repository.OrderRepository;
+import org.books.persistence.repository.*;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import javax.naming.*;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static main.java.org.books.persistence.enumeration.BookBinding.PAPERBACK;
-import static main.java.org.books.persistence.enumeration.CreditCardType.MASTERCARD;
-import static main.java.org.books.persistence.enumeration.OrderStatus.ACCEPTED;
+import static org.books.persistence.enumeration.BookBinding.*;
+import static org.books.persistence.enumeration.CreditCardType.*;
+import static org.books.persistence.enumeration.OrderStatus.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 public class PersistenceIT {
 
-	private final String rootPath = "java:comp/bookstore/";
+	private final String rootPath = "java:global/org.books.persistence.repository";
 	private final BookRepository bookRepository = new BookRepository();
 	private final CustomerRepository customerRepository = new CustomerRepository();
 	private final OrderRepository orderRepository = new OrderRepository();
@@ -33,21 +29,24 @@ public class PersistenceIT {
 	@BeforeClass
 	public void lookupRepositories() throws NamingException{
 		Context jndiContext = new InitialContext();
-		jndiContext.lookup(rootPath);
+		//jndiContext.lookup(rootPath);
 
-		/*
-		InitialContext ctx = new InitialContext();
-		NamingEnumeration<NameClassPair> list = ctx.list("");
+		NamingEnumeration<NameClassPair> list = jndiContext.list("");
 		System.out.println("Start scan for JNDI.");
 		while (list.hasMore()) {
 			System.out.println(list.next().getName());
 		}
 		System.out.println("Finished scan for JNDI.");
-		*/
 
-		//BookRepositoryRemote bookRemote = (BookRepositoryRemote) jndiContext.lookup(rootPath + "BookRepositoryRemote");
-		//CustomerRepositoryRemote customerRemote = (CustomerRepositoryRemote) jndiContext.lookup(rootPath + "CustomerRepositoryRemote");
-		//OrderRepositoryRemote orderRemote = (OrderRepositoryRemote) jndiContext.lookup(rootPath + "OrderRepositoryRemote");
+		//Hashtable env = jndiContext.getEnvironment();
+		//System.out.println("Table: "+env.toString());
+
+		System.out.println("Name in Space: " +jndiContext.getNameInNamespace());;
+
+		BookRepositoryRemote bookRemote = (BookRepositoryRemote) jndiContext.lookup(rootPath + "!BookRepositoryRemote");
+		CustomerRepositoryRemote customerRemote = (CustomerRepositoryRemote) jndiContext.lookup(rootPath + "!CustomerRepositoryRemote");
+		OrderRepositoryRemote orderRemote = (OrderRepositoryRemote) jndiContext.lookup(rootPath + "!OrderRepositoryRemote");
+
 	}
 
 	@BeforeClass

@@ -1,6 +1,6 @@
-package main.java.org.books.persistence.dto;
+package org.books.persistence.dto;
 
-import main.java.org.books.persistence.enumeration.OrderStatus;
+import org.books.persistence.enumeration.OrderStatus;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

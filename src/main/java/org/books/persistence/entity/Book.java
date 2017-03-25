@@ -1,4 +1,4 @@
-package main.java.org.books.persistence.entity;
+package org.books.persistence.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,7 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import main.java.org.books.persistence.enumeration.BookBinding;
+import org.books.persistence.enumeration.BookBinding;
 
 @Entity
 @Table(name = "BOOK")

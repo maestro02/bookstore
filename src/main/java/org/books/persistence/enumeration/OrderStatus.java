@@ -1,4 +1,4 @@
-package main.java.org.books.persistence.enumeration;
+package org.books.persistence.enumeration;
 
 public enum OrderStatus {
 

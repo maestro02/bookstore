@@ -1,4 +1,4 @@
-package main.java.org.books.persistence.repository;
+package org.books.persistence.repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

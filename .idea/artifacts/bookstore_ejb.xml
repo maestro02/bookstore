@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="ejb-jar" name="bookstore:ejb">
     <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="bookstore-jpa-1.0-SNAPSHOT.jar">
+    <root id="archive" name="bookstore-1.0-SNAPSHOT.jar">
       <element id="artifact" artifact-name="bookstore:ejb exploded" />
     </root>
   </artifact>

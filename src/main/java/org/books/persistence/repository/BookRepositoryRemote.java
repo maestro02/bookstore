@@ -1,6 +1,6 @@
-package main.java.org.books.persistence.repository;
+package org.books.persistence.repository;
 
-import main.java.org.books.persistence.entity.Book;
+import org.books.persistence.entity.Book;
 
 import javax.ejb.Remote;
 import java.util.List;

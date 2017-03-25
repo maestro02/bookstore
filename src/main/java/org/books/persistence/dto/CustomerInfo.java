@@ -1,4 +1,4 @@
-package main.java.org.books.persistence.dto;
+package org.books.persistence.dto;
 
 import java.io.Serializable;
 
