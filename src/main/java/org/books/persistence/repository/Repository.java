@@ -7,10 +7,10 @@ import javax.persistence.PersistenceContext;
 
 import static javax.persistence.PersistenceContextType.TRANSACTION;
 
-@PersistenceContext(unitName = "bookstore", type = TRANSACTION)
-public class Repository<T> {
+public class Repository<T> implements RepositoryRemote<T> {
 
 	private static final String PERSISTENCE_UNIT = "bookstore";
+@PersistenceContext(unitName = "bookstore", type = TRANSACTION)
 	protected EntityManager entityManager;
 
 	public Repository() {
@@ -19,8 +19,10 @@ public class Repository<T> {
 		entityManager = entityManagerFactory.createEntityManager();
 	}
 
-	public void persist(T entity) {
+	public T persist(T entity) {
 		entityManager.persist(entity);
+		entityManager.flush();
+		return entity;
 	}
 
 	public T find(Class<T> type, Object id) {
@@ -28,10 +30,7 @@ public class Repository<T> {
 	}
 
 	public T update(T entity) {
-		entityManager.getTransaction().begin();
-		entity = entityManager.merge(entity);
-		entityManager.getTransaction().commit();
-		return entity;
+		return entityManager.merge(entity);
 	}
 
 	public boolean delete(Class<T> type, Object id) {
@@ -39,9 +38,7 @@ public class Repository<T> {
 		if (entity == null) {
 			return false;
 		}
-		entityManager.getTransaction().begin();
 		entityManager.remove(entity);
-		entityManager.getTransaction().commit();
 		return true;
 	}
 }

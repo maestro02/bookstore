@@ -11,7 +11,7 @@ import java.util.List;
  * Created by maestroSurface on 24.03.2017.
  */
 @Remote
-public interface OrderRepositoryRemote {
+public interface OrderRepositoryRemote extends RepositoryRemote<Order> {
 
 	public Order find(Long number);
 	public List<OrderInfo> search(Customer customer, Integer year);

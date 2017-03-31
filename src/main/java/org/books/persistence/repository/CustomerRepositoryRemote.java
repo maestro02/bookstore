@@ -10,7 +10,7 @@ import java.util.List;
  * Created by maestroSurface on 24.03.2017.
  */
 @Remote
-public interface CustomerRepositoryRemote {
+public interface CustomerRepositoryRemote extends RepositoryRemote<Customer> {
 
 	public Customer find(Long number);
 	public Customer find(String email);

@@ -17,10 +17,10 @@ import static org.testng.Assert.assertNotNull;
 
 public class PersistenceIT {
 
-	private final String rootPath = "java:global/org.books.persistence.repository";
-	private final BookRepository bookRepository = new BookRepository();
-	private final CustomerRepository customerRepository = new CustomerRepository();
-	private final OrderRepository orderRepository = new OrderRepository();
+	private final String JNDI_BASE_NAME = "java:global/bookstore/";
+	private BookRepositoryRemote bookRepository;
+	private CustomerRepositoryRemote customerRepository;
+	private OrderRepositoryRemote orderRepository;
 
 	private List<Book> books;
 	private Customer customer;
@@ -29,23 +29,9 @@ public class PersistenceIT {
 	@BeforeClass
 	public void lookupRepositories() throws NamingException{
 		Context jndiContext = new InitialContext();
-		//jndiContext.lookup(rootPath);
-
-		NamingEnumeration<NameClassPair> list = jndiContext.list("");
-		System.out.println("Start scan for JNDI.");
-		while (list.hasMore()) {
-			System.out.println(list.next().getName());
-		}
-		System.out.println("Finished scan for JNDI.");
-
-		//Hashtable env = jndiContext.getEnvironment();
-		//System.out.println("Table: "+env.toString());
-
-		System.out.println("Name in Space: " +jndiContext.getNameInNamespace());;
-
-		BookRepositoryRemote bookRemote = (BookRepositoryRemote) jndiContext.lookup(rootPath + "!BookRepositoryRemote");
-		CustomerRepositoryRemote customerRemote = (CustomerRepositoryRemote) jndiContext.lookup(rootPath + "!CustomerRepositoryRemote");
-		OrderRepositoryRemote orderRemote = (OrderRepositoryRemote) jndiContext.lookup(rootPath + "!OrderRepositoryRemote");
+		bookRepository = (BookRepositoryRemote) jndiContext.lookup(JNDI_BASE_NAME + "BookRepository");
+		customerRepository = (CustomerRepositoryRemote) jndiContext.lookup(JNDI_BASE_NAME + "CustomerRepository");
+		orderRepository = (OrderRepositoryRemote) jndiContext.lookup(JNDI_BASE_NAME + "OrderRepository");
 
 	}
 
@@ -79,7 +65,7 @@ public class PersistenceIT {
 
 	@Test
 	public void persistCustomer() {
-		customerRepository.persist(customer);
+		customer = customerRepository.persist(customer);
 		assertNotNull(customerRepository.find(customer.getNumber()));
 	}
 
@@ -98,8 +84,8 @@ public class PersistenceIT {
 			items.add(new OrderItem(book, 1, book.getPrice()));
 		}
 		order = new Order(new Date(), amount, ACCEPTED, customer, customer.getAddress(), customer.getCreditCard(), items);
-		orderRepository.persist(order);
-		assertNotNull(orderRepository.find(order.getNumber()));
+		this.order = orderRepository.persist(order);
+		assertNotNull(orderRepository.find(this.order.getNumber()));
 	}
 
 	@Test(dependsOnMethods = "persistOrder")

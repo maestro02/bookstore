@@ -9,7 +9,7 @@ import java.util.List;
  * Created by maestroSurface on 24.03.2017.
  */
 @Remote
-public interface BookRepositoryRemote {
+public interface BookRepositoryRemote extends RepositoryRemote<Book> {
 
 	public Book find(String isbn);
 	public List<Book> search(String keywords);
