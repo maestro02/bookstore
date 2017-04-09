@@ -28,7 +28,7 @@ import static org.testng.Assert.assertNotNull;
 
 public class ApplicationIT {
 
-	private static final String JNDI_BASE_NAME = "java:global/bookstore-ejb/";
+	private static final String JNDI_BASE_NAME = "java:global/bookstore/";
 
 	private CatalogServiceRemote catalogService;
 	private CustomerServiceRemote customerService;
