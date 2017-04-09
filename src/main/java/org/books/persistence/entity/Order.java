@@ -19,6 +19,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "BOOK_ORDER")
+@NamedQuery(name = "searchOrders",
+		query = "SELECT NEW org.books.persistence.dto.OrderInfo(o.number, o.date, o.amount, o.status) "
+				+ "FROM Order o WHERE o.customer = :customer AND o.date >= :startDate AND o.date < :endDate")
 public class Order implements Serializable{
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)

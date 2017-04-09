@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class CreditCard implements Serializable{
 
 	@Column(name = "CC_TYPE", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private CreditCardType type;
 	@Column(name = "CC_NUMBER", nullable = false)
 	private String number;

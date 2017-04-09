@@ -11,15 +11,16 @@ import java.math.BigDecimal;
 @Table(name = "ORDER_ITEM")
 public class OrderItem implements Serializable {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ITEM_ID")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private long id;
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "ISBN")
 	private Book book;
-	@Column(name = "ITEM_QUANTITY")
+	@Column(name = "QUANTITY")
 	private Integer quantity;
-	@Column(name = "ITEM_PRICE", precision = 7, scale = 2)
+	@Column(name = "PRICE", precision = 7, scale = 2)
 	private BigDecimal price;
 
 	public OrderItem() {

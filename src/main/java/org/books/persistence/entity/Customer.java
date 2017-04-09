@@ -7,16 +7,18 @@ import java.io.Serializable;
  * Created by maestroSurface on 10.03.2017.
  */
 // @NamedQuery(name = "Customer.findByName", query = "SELECT c FROM Customer c WHERE LOWER(c.firstName) LIKE LOWER(:name) OR LOWER(c.lastName) LIKE LOWER(:name) "),
-@NamedQueries({@NamedQuery(name = "Customer.findByMail", query =
-				"SELECT c FROM Customer c WHERE LOWER(c.email) LIKE LOWER(:mail)"),
-		@NamedQuery(name = "Customer.findByName", query =
-				"SELECT NEW org.books.persistence.dto.CustomerInfo(c.number, c.firstName, c.lastName, c.email) from Customer c where LOWER(c.firstName) LIKE LOWER(:name) OR LOWER(c.lastName) LIKE LOWER(:name)")})
+@NamedQueries({
+		@NamedQuery(name = "findCustomer",
+				query = "SELECT c FROM Customer c WHERE LOWER(c.email) = LOWER(:email)"),
+		@NamedQuery(name = "searchCustomers",
+				query = "SELECT NEW org.books.persistence.dto.CustomerInfo(c.number, c.firstName, c.lastName, c.email) " + "FROM Customer c WHERE LOWER(c.firstName) LIKE LOWER(:pattern) OR LOWER(c.lastName) LIKE LOWER(:pattern)")
+})
 
 @Entity
 public class Customer implements Serializable {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "CUSTOMER_ID")
 	private Long number;
 	@Column(name = "CUSTOMER_FIRST_NAME")

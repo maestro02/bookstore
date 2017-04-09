@@ -1,33 +1,39 @@
 package org.books.persistence.repository;
 
-import java.util.List;
-
-import org.books.persistence.entity.Customer;
 import org.books.persistence.dto.CustomerInfo;
+import org.books.persistence.entity.Customer;
 
 import javax.ejb.Stateless;
-import javax.persistence.*;
+import javax.ejb.TransactionAttribute;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import java.util.List;
+
+import static javax.ejb.TransactionAttributeType.SUPPORTS;
 
 @Stateless
-public class CustomerRepository extends Repository<Customer> implements CustomerRepositoryRemote{
+public class CustomerRepository extends Repository<Customer> {
 
+	@TransactionAttribute(SUPPORTS)
 	public Customer find(Long number) {
 		return super.find(Customer.class, number);
 	}
 
+	@TransactionAttribute(SUPPORTS)
 	public Customer find(String email) {
 		try {
-			javax.persistence.Query q = entityManager.createNamedQuery("Customer.findByMail");
-			q.setParameter("mail", "%" + email + "%");
-			return (Customer) q.getSingleResult();
+			TypedQuery<Customer> query = entityManager.createNamedQuery("findCustomer", Customer.class);
+			query.setParameter("email", email);
+			return query.getSingleResult();
 		} catch (NoResultException ex) {
 			return null;
 		}
 	}
 
+	@TransactionAttribute(SUPPORTS)
 	public List<CustomerInfo> search(String name) {
-		TypedQuery<CustomerInfo> q = entityManager.createNamedQuery("Customer.findByName", CustomerInfo.class);
-		q.setParameter("name", "%" + name + "%");
-		return q.getResultList();
+		TypedQuery<CustomerInfo> query = entityManager.createNamedQuery("searchCustomers", CustomerInfo.class);
+		query.setParameter("pattern", "%" + name + "%");
+		return query.getResultList();
 	}
 }
