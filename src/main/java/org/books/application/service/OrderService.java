@@ -30,6 +30,8 @@ import org.books.persistence.enumeration.OrderStatus;
 import org.books.persistence.repository.OrderRepository;
 
 import static javax.ejb.TransactionAttributeType.REQUIRED;
+import jdk.nashorn.internal.runtime.regexp.RegExp;
+import jdk.nashorn.internal.runtime.regexp.RegExpMatcher;
 
 @LocalBean
 @Stateless(name = "OrderService")
@@ -46,9 +48,9 @@ public class OrderService implements OrderServiceRemote {
 	private OrderRepository orderRepository;
 
 	@Resource(name = "creditCardNumberPattern")
-	private String creditCardNumberPattern;
+	private String creditCardNumberPattern = "^\\d{16}$";
 	@Resource(name = "creditCardPaymentLimit")
-	private Long creditCardPaymentLimit;
+	private Long creditCardPaymentLimit = new Long(3000);
 
 	@Override
 	public SalesOrder placeOrder(PurchaseOrder purchaseOrder)
