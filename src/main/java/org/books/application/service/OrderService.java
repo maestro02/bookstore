@@ -10,6 +10,11 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Message;
+import javax.jms.Queue;
 import org.books.application.dto.PurchaseOrder;
 import org.books.application.dto.PurchaseOrderItem;
 import org.books.application.dto.SalesOrder;
@@ -30,8 +35,6 @@ import org.books.persistence.enumeration.OrderStatus;
 import org.books.persistence.repository.OrderRepository;
 
 import static javax.ejb.TransactionAttributeType.REQUIRED;
-import jdk.nashorn.internal.runtime.regexp.RegExp;
-import jdk.nashorn.internal.runtime.regexp.RegExpMatcher;
 
 @LocalBean
 @Stateless(name = "OrderService")
@@ -47,10 +50,16 @@ public class OrderService implements OrderServiceRemote {
 	@EJB
 	private OrderRepository orderRepository;
 
+	@Inject
+	@JMSConnectionFactory("jms/connectionFactory")
+	private JMSContext jmsContext;
+	@Resource(lookup = "jms/orderQueue")
+	private Queue queue;
+
 	@Resource(name = "creditCardNumberPattern")
-	private String creditCardNumberPattern = "^\\d{16}$";
+	private String creditCardNumberPattern;
 	@Resource(name = "creditCardPaymentLimit")
-	private Long creditCardPaymentLimit = new Long(3000);
+	private Long creditCardPaymentLimit;
 
 	@Override
 	public SalesOrder placeOrder(PurchaseOrder purchaseOrder)
@@ -58,6 +67,7 @@ public class OrderService implements OrderServiceRemote {
 		logger.log(Level.INFO, "Placing order for customer with number ''{0}''", purchaseOrder.getCustomerNr());
 		Order order = createOrder(purchaseOrder);
 		makePayment(order);
+		processOrder(order);
 		return convert(order);
 	}
 
@@ -127,6 +137,11 @@ public class OrderService implements OrderServiceRemote {
 		if (order.getAmount().compareTo(BigDecimal.valueOf(creditCardPaymentLimit)) > 0) {
 			throw new PaymentFailedException(Code.PAYMENT_LIMIT_EXCEEDED);
 		}
+	}
+
+	private void processOrder(Order order) {
+		Message message = jmsContext.createTextMessage(String.valueOf(order.getNumber()));
+		jmsContext.createProducer().send(queue, message);
 	}
 
 	private SalesOrder convert(Order order) {
