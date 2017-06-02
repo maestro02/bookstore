@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<h:head>
+		<title>Bookstore</title>
+		<h:outputStylesheet name="styles.css"/>
+	</h:head>
+
+	<h:body>
+		<h:panelGrid columns="2">
+			<h:graphicImage name="/img/books.jpg"/>
+			<h:panelGroup>
+				<h:outputText value="Bookstore" styleClass="title"/>
+                <h:form>
+                    <h:commandLink value="Catalog" action="catalog"/>
+                    <h:outputText value=" | "/>
+                    <h:commandLink value="Shopping Cart" action="shoppingCart"/>
+                </h:form>
+				<p/>
+				<h:outputText value="Shopping Cart" styleClass="heading"/>
+				<p/>
+				<h:outputText value="Shopping cart is empty" rendered="#{empty shoppingCart.items}"/>
+				<h:form rendered="#{not empty shoppingCart.items}">
+					<h:dataTable id="items" value="#{shoppingCart.items}" var="item">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="ISBN"/>
+							</f:facet>
+							<h:outputText value="#{item.book.isbn}"/>
+							<f:facet name="footer">
+								<h:outputText value="Total Price" styleClass="important"/>
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Title"/>
+							</f:facet>
+							<h:outputText value="#{item.book.title}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Price"/>
+							</f:facet>
+							<h:outputText value="#{item.book.price}"/>
+							<f:facet name="footer">
+								<h:outputText value="#{shoppingCart.totalPrice}" styleClass="important"/>
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Quantity"/>
+							</f:facet>
+							<h:inputText id="quantity" value="#{item.quantity}" size="2" required="true"/>
+						</h:column>
+						<h:column>
+							<h:commandButton action="#{shoppingCart.removeBook(item.book)}" value="remove" immediate="true"/>
+							<f:facet name="footer">
+								<h:commandButton action="#{shoppingCart.updateTotalPrice()}" value="update cart"/>
+							</f:facet>
+						</h:column>
+					</h:dataTable>
+				</h:form>
+                <p/>
+                <h:form>
+                    <h:commandButton value="Back" action="catalog"/>
+                </h:form>
+			</h:panelGroup>
+		</h:panelGrid>
+	</h:body>
+</html>
